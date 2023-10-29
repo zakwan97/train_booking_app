@@ -6,4 +6,7 @@ class AppRoutes {
   //ticket page
   static const String ticketPage = '/ticketPage';
   static const String trainSeatSelectionPage = '/trainSeatSelectionPage';
+  //confirm booking
+  static const String confirmBookingPage = '/confirmBookingPage';
+  static const String paymentPage = '/paymentPage';
 }

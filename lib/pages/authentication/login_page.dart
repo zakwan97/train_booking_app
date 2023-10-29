@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/route_manager.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:train_booking_app/model/user/user_model.dart';
+import 'package:train_booking_app/services/supabase_client.dart' as s;
 import 'package:train_booking_app/shared/keyboard_unfocus.dart';
 import 'package:train_booking_app/shared/size_shared.dart';
 import 'package:train_booking_app/shared/textformfield_shared_2.dart';
@@ -16,8 +19,36 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController emailTextController = TextEditingController();
   TextEditingController passwordTextController = TextEditingController();
+  late String finalEmail;
+  late String finalPassword;
   bool _passwordVisible = false;
   final _formKey = GlobalKey<FormState>();
+  late SupabaseClient supabase;
+
+  @override
+  void initState() {
+    supabase = SupabaseClient(
+      s.supabaseUrl,
+      s.supabaseApiKey,
+    );
+    super.initState();
+  }
+
+  Future<void> loginUser(String email, String password) async {
+    final response = await supabase
+        .from('Users')
+        .select()
+        .eq('email', email)
+        .eq('password', password)
+        .execute();
+
+    if (response.data.isNotEmpty) {
+      final userData = response.data[0] as Map<String, dynamic>;
+      final userModel = UserModel.fromJson(userData);
+      print(userModel.userID);
+    } else {}
+  }
+
   @override
   Widget build(BuildContext context) {
     return KeyboardUnfocusFunction(
@@ -107,9 +138,17 @@ class _LoginPageState extends State<LoginPage> {
                           color: Colors.red,
                           minWidth: double.infinity,
                           child: const Text("LOGIN"),
-                          onPressed: () {
-                            // if (_formKey.currentState!.validate()) {}
-                            Get.offNamed('/homePage');
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              setState(() {
+                                finalEmail = emailTextController.text;
+                                finalPassword = passwordTextController.text;
+                              });
+                              await loginUser(finalEmail, finalPassword)
+                                  .then((value) {
+                                Get.offNamed('/homePage');
+                              });
+                            }
                           },
                         )
                       ],

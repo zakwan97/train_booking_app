@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:get/get.dart';
 
 class TrainSeatSelectionPage extends StatefulWidget {
   const TrainSeatSelectionPage({super.key});
@@ -77,7 +78,9 @@ class _TrainSeatSelectionPageState extends State<TrainSeatSelectionPage> {
               ),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.toNamed('/paymentPage');
+              },
               child: const Text('Book Seats'),
             ),
           ],

@@ -1,13 +1,35 @@
-class User {
-  final String id;
-  final String email;
-  final String name;
-  final String phoneNumber;
+class UserModel {
+  int userID;
+  String email;
+  String username;
+  String password;
+  String fullname;
 
-  User({
-    required this.id,
+  UserModel({
+    required this.userID,
     required this.email,
-    required this.name,
-    required this.phoneNumber,
+    required this.username,
+    required this.password,
+    required this.fullname,
   });
+
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      userID: json['userID'],
+      email: json['email'],
+      username: json['username'],
+      password: json['password'],
+      fullname: json['fullname'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'userID': userID,
+      'email': email,
+      'username': username,
+      'password': password,
+      'fullname': fullname,
+    };
+  }
 }
