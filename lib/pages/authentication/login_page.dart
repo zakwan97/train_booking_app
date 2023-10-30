@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:train_booking_app/controller/login_controller.dart';
 import 'package:train_booking_app/model/user/user_model.dart';
-import 'package:train_booking_app/services/supabase_client.dart' as s;
+import 'package:train_booking_app/util/supabase_client.dart' as s;
 import 'package:train_booking_app/shared/keyboard_unfocus.dart';
 import 'package:train_booking_app/shared/size_shared.dart';
 import 'package:train_booking_app/shared/textformfield_shared_2.dart';
@@ -19,11 +21,17 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController emailTextController = TextEditingController();
   TextEditingController passwordTextController = TextEditingController();
+
   late String finalEmail;
   late String finalPassword;
+
   bool _passwordVisible = false;
+
   final _formKey = GlobalKey<FormState>();
+
   late SupabaseClient supabase;
+
+  UserController lc = Get.put(UserController());
 
   @override
   void initState() {
@@ -144,6 +152,7 @@ class _LoginPageState extends State<LoginPage> {
                                 finalEmail = emailTextController.text;
                                 finalPassword = passwordTextController.text;
                               });
+                              await lc.checkSignIn(finalEmail, finalPassword);
                               await loginUser(finalEmail, finalPassword)
                                   .then((value) {
                                 Get.offNamed('/homePage');

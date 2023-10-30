@@ -3,7 +3,7 @@ import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
 import 'package:supabase/supabase.dart';
 import 'package:train_booking_app/model/user/user_model.dart';
-import 'package:train_booking_app/services/supabase_client.dart' as s;
+import 'package:train_booking_app/util/supabase_client.dart' as s;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({

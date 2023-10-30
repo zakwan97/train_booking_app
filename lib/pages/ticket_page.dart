@@ -28,9 +28,10 @@ class _TicketPageState extends State<TicketPage> {
       top: false,
       child: KeyboardUnfocusFunction(
         child: Scaffold(
+          backgroundColor: Colors.red[50],
           appBar: AppBar(
             title: const Text(
-              "Select Depart Ticket",
+              "SELECT DEPART TICKET",
               style: TextStyle(color: Colors.white, letterSpacing: 2.0),
             ),
             backgroundColor: Colors.red,

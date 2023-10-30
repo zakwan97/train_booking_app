@@ -1,8 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:train_booking_app/services/supabase_client.dart' as source;
+import 'package:train_booking_app/util/supabase_client.dart' as source;
 
 class PaymentPage extends StatefulWidget {
   const PaymentPage({super.key});
