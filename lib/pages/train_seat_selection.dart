@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
+import 'package:train_booking_app/controller/schedule_controller.dart';
 
 class TrainSeatSelectionPage extends StatefulWidget {
   const TrainSeatSelectionPage({super.key});
@@ -16,6 +17,7 @@ class _TrainSeatSelectionPageState extends State<TrainSeatSelectionPage> {
 
   // Constants to define seat number ranges for each coach
   static const List<int> coachSeatRanges = [20, 20, 20, 20, 20, 20];
+  List<int> tempSeat = [];
 
   // State variables to track selected seats
   List<List<bool>> selectedSeats = List.generate(
@@ -26,72 +28,110 @@ class _TrainSeatSelectionPageState extends State<TrainSeatSelectionPage> {
     ),
   );
 
+  // ScheduleController s = Get.find();
+
   int currentPage = 0;
   int paxCount = 1;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Train Seat Selection'),
+    return GetBuilder<ScheduleController>(builder: (s) {
+      s.getCoach(1);
+      return SafeArea(
+        top: false,
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Train Seat Selection'),
+          ),
+          body: s.isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.red,
+                  ),
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CoachIndicator(
+                      numCoaches: s.coachList.length,
+                      currentPage: currentPage,
+                    ),
+                    SizedBox(
+                      height: 1.0.h,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        tempSeat.clear();
+                      },
+                      child: Text(
+                        'Pax Count: ${s.paxController.text}', // Display pax count
+                        style: const TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: PageView.builder(
+                        itemCount: s.coachList.length,
+                        controller: PageController(),
+                        onPageChanged: (int page) async {
+                          await s.getSeat(s.coachList[page]['coachID']);
+                          setState(() {
+                            currentPage = page;
+                          });
+                        },
+                        itemBuilder: (context, coachIndex) {
+                          return CoachSeatSelection(
+                            coachNumber: s.coachList[coachIndex]['Coach']
+                                ['coachNumber'],
+                            selectedSeats: selectedSeats[coachIndex],
+                            allowedSeatRange: coachSeatRanges[coachIndex],
+                            onSeatSelected: (seatIndex) {
+                              setState(() {
+                                if (!s.seatList[seatIndex]['isBooked']) {
+                                  if (tempSeat.length <
+                                      int.parse(s.paxController.text)) {
+                                    selectedSeats[coachIndex][seatIndex] =
+                                        !selectedSeats[coachIndex][seatIndex];
+                                    if (selectedSeats[coachIndex][seatIndex]) {
+                                      tempSeat.add(seatIndex);
+                                    } else {
+                                      tempSeat.remove(seatIndex);
+                                    }
+                                  } else {
+                                    selectedSeats[coachIndex][seatIndex] =
+                                        false;
+                                    tempSeat.remove(seatIndex);
+                                    print('Dah penuh');
+                                  }
+                                }
+                              });
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Get.toNamed('/paymentPage');
+                      },
+                      child: const Text('Book Seats'),
+                    ),
+                  ],
+                ),
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CoachIndicator(
-              numCoaches: numCoaches,
-              currentPage: currentPage,
-            ),
-            SizedBox(
-              height: 1.0.h,
-            ),
-            Text(
-              'Pax Count: $paxCount', // Display pax count
-              style: const TextStyle(
-                fontSize: 18,
-              ),
-            ),
-            Expanded(
-              child: PageView.builder(
-                itemCount: numCoaches,
-                controller: PageController(),
-                onPageChanged: (int page) {
-                  setState(() {
-                    currentPage = page;
-                  });
-                },
-                itemBuilder: (context, coachIndex) {
-                  return CoachSeatSelection(
-                    coachNumber: coachIndex + 1,
-                    selectedSeats: selectedSeats[coachIndex],
-                    allowedSeatRange: coachSeatRanges[coachIndex],
-                    onSeatSelected: (seatIndex) {
-                      setState(() {
-                        selectedSeats[coachIndex][seatIndex] =
-                            !selectedSeats[coachIndex][seatIndex];
-                      });
-                    },
-                  );
-                },
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Get.toNamed('/paymentPage');
-              },
-              child: const Text('Book Seats'),
-            ),
-          ],
-        ),
-      ),
-    );
+      );
+    });
   }
 }
 
 class CoachSeatSelection extends StatelessWidget {
-  final int coachNumber;
+  final String coachNumber;
   final List<bool> selectedSeats;
   final int allowedSeatRange;
   final Function(int) onSeatSelected;
@@ -106,6 +146,7 @@ class CoachSeatSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScheduleController s = Get.find();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -132,28 +173,26 @@ class CoachSeatSelection extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Container(
-            color: Colors.amber,
-            child: GridView.builder(
-              shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                mainAxisSpacing: 5.0,
-                crossAxisSpacing: 5.0,
-              ),
-              itemCount: selectedSeats.length,
-              itemBuilder: (context, seatIndex) {
-                return SeatWidget(
-                  seatNumber: seatIndex + 1,
-                  isSelected: selectedSeats[seatIndex],
-                  onTap: () {
-                    if (seatIndex < allowedSeatRange) {
-                      onSeatSelected(seatIndex);
-                    }
-                  },
-                );
-              },
+          child: GridView.builder(
+            shrinkWrap: true,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 4,
+              mainAxisSpacing: 5.0,
+              crossAxisSpacing: 5.0,
             ),
+            itemCount: 20,
+            itemBuilder: (context, seatIndex) {
+              return SeatWidget(
+                seatNumber: s.seatList[seatIndex]['seatName'],
+                isSelected: selectedSeats[seatIndex],
+                isBooked: s.seatList[seatIndex]['isBooked'],
+                onTap: () {
+                  if (seatIndex < allowedSeatRange) {
+                    onSeatSelected(seatIndex);
+                  }
+                },
+              );
+            },
           ),
         ),
       ],
@@ -162,20 +201,26 @@ class CoachSeatSelection extends StatelessWidget {
 }
 
 class SeatWidget extends StatelessWidget {
-  final int seatNumber;
+  final String seatNumber;
   final bool isSelected;
+  final bool isBooked;
   final Function onTap;
 
   const SeatWidget({
     super.key,
     required this.seatNumber,
     required this.isSelected,
+    required this.isBooked,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    Color seatColor = isSelected ? Colors.green : Colors.blue;
+    Color seatColor = isSelected
+        ? Colors.green
+        : isBooked
+            ? Colors.red
+            : Colors.blue;
 
     return GestureDetector(
       onTap: () {

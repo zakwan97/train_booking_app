@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
+import 'package:train_booking_app/controller/login_controller.dart';
 import 'package:train_booking_app/routes/app_pages.dart';
 import 'package:train_booking_app/util/preference.dart';
 import 'package:train_booking_app/util/supabase_client.dart';
 
+class InitialBinding implements Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(() => UserController(), fenix: true);
+  }
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Preference.init();
+  Preference.getBool(Preference.isLogin) ??
+      Preference.setBool(Preference.isLogin, false);
   supabaseclient;
   runApp(const MyApp());
 }
@@ -27,8 +37,9 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          initialRoute: '/loginPage',
+          initialRoute: '/splashPage',
           getPages: AppPages.pageList,
+          initialBinding: InitialBinding(),
         );
       },
     );

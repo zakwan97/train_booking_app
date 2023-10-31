@@ -6,6 +6,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:train_booking_app/controller/login_controller.dart';
 import 'package:train_booking_app/model/user/user_model.dart';
+import 'package:train_booking_app/util/preference.dart';
 import 'package:train_booking_app/util/supabase_client.dart' as s;
 import 'package:train_booking_app/shared/keyboard_unfocus.dart';
 import 'package:train_booking_app/shared/size_shared.dart';
@@ -42,20 +43,20 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
   }
 
-  Future<void> loginUser(String email, String password) async {
-    final response = await supabase
-        .from('Users')
-        .select()
-        .eq('email', email)
-        .eq('password', password)
-        .execute();
+  // Future<void> loginUser(String email, String password) async {
+  //   final response = await supabase
+  //       .from('Users')
+  //       .select()
+  //       .eq('email', email)
+  //       .eq('password', password)
+  //       .execute();
 
-    if (response.data.isNotEmpty) {
-      final userData = response.data[0] as Map<String, dynamic>;
-      final userModel = UserModel.fromJson(userData);
-      print(userModel.userID);
-    } else {}
-  }
+  //   if (response.data.isNotEmpty) {
+  //     final userData = response.data[0] as Map<String, dynamic>;
+  //     final userModel = UserModel.fromJson(userData);
+  //     print(userModel.userID);
+  //   } else {}
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -147,17 +148,19 @@ class _LoginPageState extends State<LoginPage> {
                           minWidth: double.infinity,
                           child: const Text("LOGIN"),
                           onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              setState(() {
-                                finalEmail = emailTextController.text;
-                                finalPassword = passwordTextController.text;
-                              });
-                              await lc.checkSignIn(finalEmail, finalPassword);
-                              await loginUser(finalEmail, finalPassword)
-                                  .then((value) {
-                                Get.offNamed('/homePage');
-                              });
-                            }
+                            // if (_formKey.currentState!.validate()) {
+                            setState(() {
+                              finalEmail = emailTextController.text;
+                              finalPassword = passwordTextController.text;
+                            });
+                            await lc
+                                .checkSignIn(
+                                    'zakwan@gmail.com', 'password1234@')
+                                .then((value) {
+                              Get.toNamed('/homePage');
+                              Preference.setBool(Preference.isLogin, true);
+                            });
+                            // }
                           },
                         )
                       ],

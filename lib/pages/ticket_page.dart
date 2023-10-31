@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
+import 'package:train_booking_app/controller/schedule_controller.dart';
 import 'package:train_booking_app/shared/keyboard_unfocus.dart';
 
 class TicketPage extends StatefulWidget {
@@ -11,15 +12,10 @@ class TicketPage extends StatefulWidget {
 }
 
 class _TicketPageState extends State<TicketPage> {
-  int selectedIndex =
-      DateTime.now().day - 1; // Initialize selectedIndex to today's date
-  DateTime now = DateTime.now();
-  late DateTime lastDayOfMonth;
-
+  ScheduleController s = Get.find();
   @override
   void initState() {
     super.initState();
-    lastDayOfMonth = DateTime(now.year, now.month + 1, 0);
   }
 
   @override
@@ -32,7 +28,8 @@ class _TicketPageState extends State<TicketPage> {
           appBar: AppBar(
             title: const Text(
               "SELECT DEPART TICKET",
-              style: TextStyle(color: Colors.white, letterSpacing: 2.0),
+              style: TextStyle(
+                  fontSize: 16, color: Colors.white, letterSpacing: 2.0),
             ),
             backgroundColor: Colors.red,
           ),
@@ -47,16 +44,17 @@ class _TicketPageState extends State<TicketPage> {
                       child: Card(
                         elevation: 2.0,
                         color: Colors.red[300],
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text("Origin: Kuala Lumpur"),
-                              Text("Destination: Kota Bharu"),
-                              Text("Date: 30/11/2023"),
-                              Text("No of Pax: 1"),
+                              Text("Origin: ${s.originController.text}"),
+                              Text(
+                                  "Destination: ${s.destinationController.text}"),
+                              Text("Date: ${s.dateController.text}"),
+                              Text("No of Pax: ${s.paxController.text}"),
                             ],
                           ),
                         ),
@@ -66,15 +64,41 @@ class _TicketPageState extends State<TicketPage> {
                     Flexible(
                       child: ListView.builder(
                           scrollDirection: Axis.vertical,
-                          itemCount: 3,
+                          itemCount: s.scheduleList.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Card(
                               child: Padding(
                                   padding: const EdgeInsets.all(2.0),
                                   child: ListTile(
-                                    title: Text('$index'),
-                                    onTap: () {
-                                      Get.toNamed('trainSeatSelectionPage');
+                                    isThreeLine: true,
+                                    title: Text(
+                                        s.scheduleList[index].train.trainName),
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                            'Train From: ${s.scheduleList[index].departureStation} to ${s.scheduleList[index].arrivalStation}'),
+                                        Text(
+                                            'Price: RM${s.scheduleList[index].price}'),
+                                      ],
+                                    ),
+                                    onTap: () async {
+                                      await s
+                                          .getCoach(
+                                              s.scheduleList[index].trainID)
+                                          .then((value) {
+                                        s.getSeat(s.coachList[0]['coachID']);
+                                      });
+                                      Get.toNamed('trainSeatSelectionPage')!
+                                          .then((value) {
+                                        print(value);
+                                        if (value == null) {
+                                          s.getSeat(s.coachList[0]['coachID']);
+                                        }
+                                      });
                                     }, // Handle your onTap here.
                                   )),
                             );

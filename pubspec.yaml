@@ -42,6 +42,7 @@ dependencies:
   intl:
   horizontal_calendar: ^1.1.2
   supabase_flutter: ^1.10.23
+  supabase: ^1.11.11
   http: ^1.1.0
 
 dev_dependencies:
