@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:train_booking_app/main.dart';
 import 'package:train_booking_app/pages/authentication/login_page.dart';
 import 'package:train_booking_app/pages/confirm_booking_page.dart';
 import 'package:train_booking_app/pages/home_page.dart';

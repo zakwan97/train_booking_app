@@ -1,5 +1,3 @@
-import 'package:train_booking_app/model/train/coach_model.dart';
-
 class Train {
   int? trainID;
   String trainNumber;

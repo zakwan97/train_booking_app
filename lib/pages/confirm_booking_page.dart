@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:train_booking_app/controller/schedule_controller.dart';
+import 'package:train_booking_app/services/booking_service.dart';
 
 class ConfirmBookingPage extends StatefulWidget {
   // final String trainName;
@@ -35,49 +38,57 @@ class _ConfirmBookingPageState extends State<ConfirmBookingPage> {
     'Other'
   ];
 
+  var bookingId = 0;
+
+  ScheduleController s = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Booking Confirmation'),
+        backgroundColor: Colors.red,
+        title: const Text(
+          'BOOKING CONFIRMATION',
+          style:
+              TextStyle(fontSize: 16, color: Colors.white, letterSpacing: 2.0),
+        ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('Train Name: '),
-            const Text('Departure Station: '),
-            const Text('Arrival Station: '),
-            const Text('Departure Time: '),
-            const Text('Arrival Time: '),
-            const Text('Ticket Price: \$}'),
-            const Text('Number of Tickets: '),
-            DropdownButton<String>(
-              value: selectedPaymentMethod,
-              items: paymentMethods.map((String paymentMethod) {
-                return DropdownMenuItem<String>(
-                  value: paymentMethod,
-                  child: Text(paymentMethod),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {});
-              },
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // Handle the confirmation and proceed with the booking,
-                // taking into account the selected payment method.
-                if (selectedPaymentMethod == 'Select Payment Method') {
-                  // Show an error message or prevent the user from proceeding without selecting a payment method.
-                } else {
-                  // Proceed with the booking based on the selected payment method.
-                  // You can navigate to the payment page or perform any other action.
-                }
-              },
-              child: const Text('Confirm Booking'),
-            ),
-          ],
+      body: Card(
+        elevation: 2.0,
+        color: Colors.red[50],
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Train Name: '),
+              const Text('Departure Station: '),
+              const Text('Arrival Station: '),
+              const Text('Departure Time: '),
+              const Text('Arrival Time: '),
+              const Text('Ticket Price: RM'),
+              const Text('Number of Tickets: '),
+              DropdownButton<String>(
+                value: selectedPaymentMethod,
+                items: paymentMethods.map((String paymentMethod) {
+                  return DropdownMenuItem<String>(
+                    value: paymentMethod,
+                    child: Text(paymentMethod),
+                  );
+                }).toList(),
+                onChanged: (String? newValue) {
+                  setState(() {});
+                },
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  if (selectedPaymentMethod == 'Select Payment Method') {
+                    await s.createBooking(s.scheduleList[0].scheduleID);
+                  } else {}
+                },
+                child: const Text('Confirm Booking'),
+              ),
+            ],
+          ),
         ),
       ),
     );

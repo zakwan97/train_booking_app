@@ -17,7 +17,7 @@ class _TrainSeatSelectionPageState extends State<TrainSeatSelectionPage> {
 
   // Constants to define seat number ranges for each coach
   static const List<int> coachSeatRanges = [20, 20, 20, 20, 20, 20];
-  List<int> tempSeat = [];
+  List<int> tempSeatIndex = [];
 
   // State variables to track selected seats
   List<List<bool>> selectedSeats = List.generate(
@@ -41,7 +41,7 @@ class _TrainSeatSelectionPageState extends State<TrainSeatSelectionPage> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ScheduleController>(builder: (s) {
-      s.getCoach(1);
+      // s.getCoach(1);
       return SafeArea(
         top: false,
         child: Scaffold(
@@ -66,7 +66,7 @@ class _TrainSeatSelectionPageState extends State<TrainSeatSelectionPage> {
                     ),
                     InkWell(
                       onTap: () {
-                        tempSeat.clear();
+                        tempSeatIndex.clear();
                       },
                       child: Text(
                         'Pax Count: ${s.paxController.text}', // Display pax count
@@ -76,49 +76,65 @@ class _TrainSeatSelectionPageState extends State<TrainSeatSelectionPage> {
                       ),
                     ),
                     Expanded(
-                      child: PageView.builder(
-                        itemCount: s.coachList.length,
-                        controller: PageController(),
-                        onPageChanged: (int page) async {
-                          await s.getSeat(s.coachList[page]['coachID']);
-                          setState(() {
-                            currentPage = page;
-                          });
-                        },
-                        itemBuilder: (context, coachIndex) {
-                          return CoachSeatSelection(
-                            coachNumber: s.coachList[coachIndex]['Coach']
-                                ['coachNumber'],
-                            selectedSeats: selectedSeats[coachIndex],
-                            allowedSeatRange: coachSeatRanges[coachIndex],
-                            onSeatSelected: (seatIndex) {
-                              setState(() {
-                                if (!s.seatList[seatIndex]['isBooked']) {
-                                  if (tempSeat.length <
-                                      int.parse(s.paxController.text)) {
-                                    selectedSeats[coachIndex][seatIndex] =
-                                        !selectedSeats[coachIndex][seatIndex];
-                                    if (selectedSeats[coachIndex][seatIndex]) {
-                                      tempSeat.add(seatIndex);
-                                    } else {
-                                      tempSeat.remove(seatIndex);
-                                    }
-                                  } else {
-                                    selectedSeats[coachIndex][seatIndex] =
-                                        false;
-                                    tempSeat.remove(seatIndex);
-                                    print('Dah penuh');
-                                  }
-                                }
-                              });
-                            },
-                          );
-                        },
-                      ),
+                      child: s.isLoading
+                          ? const CircularProgressIndicator(
+                              color: Colors.red,
+                            )
+                          : PageView.builder(
+                              itemCount: s.coachList.length,
+                              controller: PageController(),
+                              onPageChanged: (int page) async {
+                                await s.getSeat(s.coachList[page]['coachID']);
+                                setState(() {
+                                  currentPage = page;
+                                });
+                              },
+                              itemBuilder: (context, coachIndex) {
+                                return CoachSeatSelection(
+                                  coachNumber: s.coachList[coachIndex]['Coach']
+                                      ['coachNumber'],
+                                  selectedSeats: selectedSeats[coachIndex],
+                                  allowedSeatRange: coachSeatRanges[coachIndex],
+                                  onSeatSelected: (seatIndex) {
+                                    setState(() {
+                                      if (!s.seatList[seatIndex]['isBooked']) {
+                                        if (tempSeatIndex.length <
+                                            int.parse(s.paxController.text)) {
+                                          selectedSeats[coachIndex][seatIndex] =
+                                              !selectedSeats[coachIndex]
+                                                  [seatIndex];
+                                          if (selectedSeats[coachIndex]
+                                              [seatIndex]) {
+                                            tempSeatIndex.add(seatIndex);
+                                            s.tempSeatID.add(s
+                                                .seatList[seatIndex]['seatID']);
+                                          } else {
+                                            tempSeatIndex.remove(seatIndex);
+                                            s.tempSeatID.remove(s
+                                                .seatList[seatIndex]['seatID']);
+                                            print(
+                                                'remove ${s.seatList[seatIndex]['seatID']}');
+                                          }
+                                        } else {
+                                          selectedSeats[coachIndex][seatIndex] =
+                                              false;
+                                          tempSeatIndex.remove(seatIndex);
+                                          s.tempSeatID.remove(
+                                              s.seatList[seatIndex]['seatID']);
+                                          print(
+                                              'remove ${s.seatList[seatIndex]['seatID']}');
+                                          print('Dah penuh');
+                                        }
+                                      }
+                                    });
+                                  },
+                                );
+                              },
+                            ),
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        Get.toNamed('/paymentPage');
+                        Get.toNamed('/confirmBookingPage');
                       },
                       child: const Text('Book Seats'),
                     ),

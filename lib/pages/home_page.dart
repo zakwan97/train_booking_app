@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:train_booking_app/controller/login_controller.dart';
 import 'package:train_booking_app/controller/schedule_controller.dart';
-import 'package:train_booking_app/services/schedule_service.dart';
 import 'package:train_booking_app/shared/keyboard_unfocus.dart';
 import 'package:train_booking_app/shared/textformfield_shared_2.dart';
 
@@ -200,22 +199,12 @@ class _HomePageState extends State<HomePage> {
                                       onPressed: () {
                                         if (_searchformKey.currentState!
                                             .validate()) {
-                                          DateTime dateTime =
-                                              DateFormat("MMMM dd, yyyy")
-                                                  .parse(s.dateController.text);
-                                          String formattedDate =
-                                              DateFormat("yyyy-MM-dd")
-                                                  .format(dateTime);
                                           s
                                               .getTrainSchedule(
                                                   s.originController.text,
                                                   s.destinationController.text,
                                                   s.dateController.text)
                                               .then((value) {
-                                            setState(() {
-                                              s.dateController.text =
-                                                  formattedDate;
-                                            });
                                             Get.toNamed('/ticketPage');
                                           });
                                         }
