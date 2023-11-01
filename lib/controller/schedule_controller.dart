@@ -17,6 +17,7 @@ class ScheduleController extends GetxController {
   List<dynamic> seatList = [].obs;
   List<dynamic> coachList = [].obs;
   List<dynamic> tempSeatID = [].obs;
+  List<dynamic> tempSeatName = [].obs;
 
   int? userID = Preference.getInt(Preference.userID);
 
@@ -51,12 +52,12 @@ class ScheduleController extends GetxController {
 
   Future createBooking(int? scheduleID) async {
     var dataTemp = await BookingService().createBooking(scheduleID, userID);
-    var bookingId = dataTemp[0]['bookingID'];
+    bookingID = dataTemp[0]['bookingID'];
 
     tempSeatID.toSet();
 
     for (int i = 0; i < tempSeatID.length; i++) {
-      await BookingService().createBookingDetails(bookingId, tempSeatID[i]);
+      await BookingService().createBookingDetails(bookingID, tempSeatID[i]);
       await BookingService().updateSeatDetails(tempSeatID[i]);
     }
     isLoading = false;

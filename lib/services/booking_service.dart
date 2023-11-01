@@ -1,17 +1,34 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:train_booking_app/util/preference.dart';
 import 'package:train_booking_app/util/supabase_client.dart';
 
 class BookingService {
   SupabaseClient supabase = supabaseclient;
 
-  Future getBookingDetails(int? userID, int? scheduleID) async {
+  int? userID = Preference.getInt(Preference.userID);
+
+  Future getBookingDetails(int? scheduleID, int? bookingID) async {
+    int? id = userID;
     final response = await supabase
         .from('Booking')
         .select('Users(fullname),'
             'Schedule(departureStation, arrivalStation, departureTime, arrivalTime, departureDate, arrivalDate, price)')
-        .eq('userID', userID)
-        .eq('scheduleID', scheduleID);
+        .eq('userID', id)
+        .eq('scheduleID', scheduleID)
+        .eq('bookingID', bookingID)
+        .execute();
     print(response);
+    return response.data;
+  }
+
+  Future getBookingHistory() async {
+    int? id = userID;
+    final response = await supabase
+        .from('Booking')
+        .select('Users(fullname),'
+            'Schedule(departureStation, arrivalStation, departureTime, arrivalTime, departureDate, arrivalDate, price)')
+        .eq('userID', id);
+    print('booking history $response');
     return response;
   }
 

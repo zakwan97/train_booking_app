@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
+import 'package:train_booking_app/controller/booking_controller.dart';
 import 'package:train_booking_app/controller/schedule_controller.dart';
 
 class TrainSeatSelectionPage extends StatefulWidget {
@@ -11,15 +12,12 @@ class TrainSeatSelectionPage extends StatefulWidget {
 }
 
 class _TrainSeatSelectionPageState extends State<TrainSeatSelectionPage> {
-  // Constants for the number of coaches and seats per coach
   static const int numCoaches = 6;
   static const int seatsPerCoach = 20;
 
-  // Constants to define seat number ranges for each coach
   static const List<int> coachSeatRanges = [20, 20, 20, 20, 20, 20];
   List<int> tempSeatIndex = [];
 
-  // State variables to track selected seats
   List<List<bool>> selectedSeats = List.generate(
     numCoaches,
     (coachIndex) => List.generate(
@@ -28,7 +26,7 @@ class _TrainSeatSelectionPageState extends State<TrainSeatSelectionPage> {
     ),
   );
 
-  // ScheduleController s = Get.find();
+  BookingController bk = Get.put(BookingController());
 
   int currentPage = 0;
   int paxCount = 1;
@@ -41,7 +39,6 @@ class _TrainSeatSelectionPageState extends State<TrainSeatSelectionPage> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ScheduleController>(builder: (s) {
-      // s.getCoach(1);
       return SafeArea(
         top: false,
         child: Scaffold(
@@ -134,7 +131,23 @@ class _TrainSeatSelectionPageState extends State<TrainSeatSelectionPage> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        Get.toNamed('/confirmBookingPage');
+                        setState(() {
+                          bk.pax = s.paxController.text;
+                          bk.bkSchedule = s.scheduleList;
+                        });
+                        if (tempSeatIndex.isEmpty) {
+                          Get.snackbar('Seat Empty', 'Please select your seat',
+                              backgroundColor: Colors.red,
+                              snackPosition: SnackPosition.BOTTOM);
+                        } else if (tempSeatIndex.length <
+                            int.parse(s.paxController.text)) {
+                          Get.snackbar('Select More Seat',
+                              'Please select according to pax',
+                              backgroundColor: Colors.red,
+                              snackPosition: SnackPosition.BOTTOM);
+                        } else {
+                          Get.toNamed('/confirmBookingPage');
+                        }
                       },
                       child: const Text('Book Seats'),
                     ),
