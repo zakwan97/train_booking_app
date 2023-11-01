@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class TextFormFieldShared extends StatelessWidget {
+  final List<TextInputFormatter>? inputFormatters;
   final String label;
   final IconData? prefixIcon;
   final String hintText;
@@ -17,6 +19,7 @@ class TextFormFieldShared extends StatelessWidget {
 
   const TextFormFieldShared({
     super.key,
+    this.inputFormatters,
     required this.label,
     this.prefixIcon,
     this.hintText = "",
@@ -35,6 +38,7 @@ class TextFormFieldShared extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      inputFormatters: inputFormatters,
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,

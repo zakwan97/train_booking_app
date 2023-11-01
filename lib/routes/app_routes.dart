@@ -9,4 +9,6 @@ class AppRoutes {
   //confirm booking
   static const String confirmBookingPage = '/confirmBookingPage';
   static const String paymentPage = '/paymentPage';
+  static const String finalBookingPage = '/finalBookingPage';
+  static const String bookingHistoryPage = '/bookingHistoryPage';
 }

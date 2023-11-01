@@ -53,11 +53,17 @@ class ScheduleController extends GetxController {
     var dataTemp = await BookingService().createBooking(scheduleID, userID);
     var bookingId = dataTemp[0]['bookingID'];
 
+    tempSeatID.toSet();
+
     for (int i = 0; i < tempSeatID.length; i++) {
       await BookingService().createBookingDetails(bookingId, tempSeatID[i]);
       await BookingService().updateSeatDetails(tempSeatID[i]);
     }
+    isLoading = false;
+    update();
+  }
 
+  Future getBookingHistory(int? scheduleID) async {
     isLoading = false;
     update();
   }

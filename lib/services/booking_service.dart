@@ -4,6 +4,17 @@ import 'package:train_booking_app/util/supabase_client.dart';
 class BookingService {
   SupabaseClient supabase = supabaseclient;
 
+  Future getBookingDetails(int? userID, int? scheduleID) async {
+    final response = await supabase
+        .from('Booking')
+        .select('Users(fullname),'
+            'Schedule(departureStation, arrivalStation, departureTime, arrivalTime, departureDate, arrivalDate, price)')
+        .eq('userID', userID)
+        .eq('scheduleID', scheduleID);
+    print(response);
+    return response;
+  }
+
   Future createBooking(int? scheduleID, int? userID) async {
     DateTime dateNow = DateTime.now();
     String dateTimeString = dateNow.toIso8601String();
@@ -12,6 +23,7 @@ class BookingService {
         .insert({
           'scheduleID': scheduleID,
           'userID': userID,
+          // 'paymentType': paymentType,
           'created_at': dateTimeString
         })
         .select('bookingID')

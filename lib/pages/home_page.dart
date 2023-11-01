@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -6,6 +7,7 @@ import 'package:train_booking_app/controller/login_controller.dart';
 import 'package:train_booking_app/controller/schedule_controller.dart';
 import 'package:train_booking_app/shared/keyboard_unfocus.dart';
 import 'package:train_booking_app/shared/textformfield_shared_2.dart';
+import 'package:train_booking_app/shared/uppercase_shared.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -79,6 +81,9 @@ class _HomePageState extends State<HomePage> {
                                       height: 1.0.h,
                                     ),
                                     TextFormFieldShared(
+                                        inputFormatters: [
+                                          UpperCaseTextFormatter()
+                                        ],
                                         controller: s.originController,
                                         keyboardType: TextInputType.text,
                                         validator: (value) {
@@ -96,6 +101,9 @@ class _HomePageState extends State<HomePage> {
                                       height: 1.0.h,
                                     ),
                                     TextFormFieldShared(
+                                        inputFormatters: [
+                                          UpperCaseTextFormatter()
+                                        ],
                                         controller: s.destinationController,
                                         keyboardType: TextInputType.text,
                                         validator: (value) {
@@ -118,12 +126,19 @@ class _HomePageState extends State<HomePage> {
                                       children: [
                                         Flexible(
                                           child: TextFormFieldShared(
+                                              inputFormatters: [
+                                                FilteringTextInputFormatter
+                                                    .digitsOnly
+                                              ],
                                               controller: s.paxController,
                                               keyboardType:
                                                   TextInputType.number,
                                               validator: (value) {
                                                 if (value!.isEmpty) {
                                                   return 'Please Enter your No of Pax';
+                                                } else if (int.parse(value) >
+                                                    3) {
+                                                  return 'Must not exceed 3 pax';
                                                 }
                                                 return null;
                                               },

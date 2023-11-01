@@ -2,12 +2,14 @@ class Booking {
   String bookingID;
   int scheduleID;
   final String userID;
+  final String paymentType;
   final DateTime createdAt;
 
   Booking({
     required this.bookingID,
     required this.scheduleID,
     required this.userID,
+    required this.paymentType,
     required this.createdAt,
   });
 
@@ -16,6 +18,7 @@ class Booking {
       bookingID: json['bookingID'],
       scheduleID: json['scheduleID'],
       userID: json['userID'],
+      paymentType: json['paymentType'],
       createdAt: json['createdAt'],
       // coaches: (json['coaches'] as List<dynamic>)
       //     .map((coachData) => Coach.fromJson(coachData))
@@ -29,6 +32,7 @@ class Booking {
       'bookingID': bookingID,
       'scheduleID': scheduleID,
       'userID': userID,
+      'paymentType': paymentType,
       'createdAt': createdAt
       // 'coaches': coaches.map((coach) => coach.toJson()).toList(),
     };

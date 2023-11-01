@@ -29,13 +29,11 @@ class ConfirmBookingPage extends StatefulWidget {
 }
 
 class _ConfirmBookingPageState extends State<ConfirmBookingPage> {
-  final String selectedPaymentMethod = 'Select Payment Method';
+  String? selectedPaymentMethod = 'Select Payment Method';
   List<String> paymentMethods = [
     'Select Payment Method',
-    'Bank Transfer',
+    'Online Banking',
     'Credit Card',
-    'PayPal',
-    'Other'
   ];
 
   var bookingId = 0;
@@ -76,13 +74,17 @@ class _ConfirmBookingPageState extends State<ConfirmBookingPage> {
                   );
                 }).toList(),
                 onChanged: (String? newValue) {
-                  setState(() {});
+                  print(newValue);
+                  setState(() {
+                    selectedPaymentMethod = newValue;
+                  });
                 },
               ),
               ElevatedButton(
                 onPressed: () async {
                   if (selectedPaymentMethod == 'Select Payment Method') {
-                    await s.createBooking(s.scheduleList[0].scheduleID);
+                    // await s.createBooking(s.scheduleList[0].scheduleID);
+                    BookingService().getBookingDetails(1, 1);
                   } else {}
                 },
                 child: const Text('Confirm Booking'),

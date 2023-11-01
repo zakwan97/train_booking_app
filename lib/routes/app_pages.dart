@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:train_booking_app/pages/authentication/login_page.dart';
+import 'package:train_booking_app/pages/booking_history_page.dart';
 import 'package:train_booking_app/pages/confirm_booking_page.dart';
+import 'package:train_booking_app/pages/final_booking_page.dart';
 import 'package:train_booking_app/pages/home_page.dart';
 import 'package:train_booking_app/pages/payment_page.dart';
 import 'package:train_booking_app/pages/splash_screen.dart';
@@ -39,6 +41,14 @@ class AppPages {
     GetPage(
       name: AppRoutes.paymentPage,
       page: () => const PaymentPage(),
+    ),
+    GetPage(
+      name: AppRoutes.finalBookingPage,
+      page: () => const FinalbookingPage(),
+    ),
+    GetPage(
+      name: AppRoutes.bookingHistoryPage,
+      page: () => const BookingHistory(),
     ),
   ];
 }
