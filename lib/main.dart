@@ -20,6 +20,7 @@ void main() async {
   Preference.getBool(Preference.isLogin) ??
       Preference.setBool(Preference.isLogin, false);
   supabaseclient;
+  checkOS();
   runApp(const MyApp());
 }
 

@@ -1,7 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:train_booking_app/controller/booking_controller.dart';
 import 'package:pdf/widgets.dart' as pw;
 
@@ -100,34 +105,72 @@ class _BookingHistoryPageState extends State<BookingHistoryPage> {
   Future<void> extractToPDF(int index) async {
     final pdf = pw.Document();
     final historyItem = bk.bkHistoryList[index];
+    var status = await Permission.storage.status;
+    if (!status.isGranted) {
+      await Permission.storage.request();
+    }
 
     pdf.addPage(
       pw.Page(
+        pageFormat: PdfPageFormat.a4,
         build: (context) {
           return pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
-              pw.Text('Full Name: ${historyItem.users.fullname}'),
               pw.Text(
-                  'Departure Station: ${historyItem.schedule.departureStation}'),
+                'Full Name: ${historyItem.users.fullname}',
+                style: const pw.TextStyle(fontSize: 10),
+              ),
               pw.Text(
-                  'Arrival Station: ${historyItem.schedule.arrivalStation}'),
-              pw.Text('Departure Time: ${historyItem.schedule.departureTime}'),
-              pw.Text('Arrival Time: ${historyItem.schedule.arrivalTime}'),
-              pw.Text('Departure Date: ${historyItem.schedule.departureDate}'),
-              pw.Text('Arrival Date: ${historyItem.schedule.arrivalDate}'),
-              pw.Text('Price: RM${historyItem.totalPrice}'),
+                'Departure Station: ${historyItem.schedule.departureStation}',
+                style: const pw.TextStyle(fontSize: 10),
+              ),
+              pw.Text(
+                'Arrival Station: ${historyItem.schedule.arrivalStation}',
+                style: const pw.TextStyle(fontSize: 10),
+              ),
+              pw.Text(
+                'Departure Time: ${historyItem.schedule.departureTime}',
+                style: const pw.TextStyle(fontSize: 10),
+              ),
+              pw.Text(
+                'Arrival Time: ${historyItem.schedule.arrivalTime}',
+                style: const pw.TextStyle(fontSize: 10),
+              ),
+              pw.Text(
+                'Departure Date: ${historyItem.schedule.departureDate}',
+                style: const pw.TextStyle(fontSize: 10),
+              ),
+              pw.Text(
+                'Arrival Date: ${historyItem.schedule.arrivalDate}',
+                style: const pw.TextStyle(fontSize: 10),
+              ),
+              pw.Text(
+                'Price: RM${historyItem.totalPrice}',
+                style: const pw.TextStyle(fontSize: 10),
+              ),
             ],
           );
         },
       ),
     );
 
-    final dir = Directory(
-        '/path/to/save/pdf'); // Replace with the desired directory path
-    final file = File('${dir.path}/booking_history_$index.pdf');
-    await file.writeAsBytes(await pdf.save());
+    // Get the directory for saving the PDF file (cross-platform)
+    final dir = await getApplicationDocumentsDirectory();
 
-    // You can now use the generated PDF file (file.path) as needed.
+    // Ensure the directory exists
+    if (!await dir.exists()) {
+      await dir.create(recursive: true);
+    }
+
+    // Generate the PDF file name
+    final fileName = 'booking_history_$index.pdf';
+
+    // Create the file path
+    final filePath = '${dir.path}/$fileName';
+
+    // Save the PDF to the specified file path
+    final file = File(filePath);
+    await file.writeAsBytes(await pdf.save());
   }
 }
