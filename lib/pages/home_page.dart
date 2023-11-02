@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
   // TextEditingController paxController = TextEditingController();
   // TextEditingController dateController = TextEditingController();
   final _searchformKey = GlobalKey<FormState>();
-  UserController u = Get.find();
+  UserController u = Get.put(UserController());
   ScheduleController s = Get.put(ScheduleController());
 
   @override
