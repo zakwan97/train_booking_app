@@ -27,5 +27,10 @@ class BookingController extends GetxController {
     update();
   }
 
-  // Future<void> getBookingDHistory() {}
+  Future<void> getBookingDHistory() async {
+    List response = await BookingService().getBookingHistory();
+    bkHistoryList =
+        response.map((item) => BookingDetailsModel.fromJson(item)).toList();
+    update();
+  }
 }

@@ -48,7 +48,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.bookingHistoryPage,
-      page: () => const BookingHistory(),
+      page: () => const BookingHistoryPage(),
     ),
   ];
 }

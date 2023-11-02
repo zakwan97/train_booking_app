@@ -6,8 +6,10 @@ import 'package:intl/intl.dart';
 import 'package:train_booking_app/controller/login_controller.dart';
 import 'package:train_booking_app/controller/schedule_controller.dart';
 import 'package:train_booking_app/shared/keyboard_unfocus.dart';
+import 'package:train_booking_app/shared/size_shared.dart';
 import 'package:train_booking_app/shared/textformfield_shared_2.dart';
 import 'package:train_booking_app/shared/uppercase_shared.dart';
+import 'package:train_booking_app/util/preference.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -38,6 +40,7 @@ class _HomePageState extends State<HomePage> {
         top: false,
         child: KeyboardUnfocusFunction(
           child: Scaffold(
+            drawer: drawer(),
             backgroundColor: Colors.red[50],
             appBar: AppBar(
               title: const Text(
@@ -239,4 +242,98 @@ class _HomePageState extends State<HomePage> {
       );
     });
   }
+
+  Widget drawer() {
+    return SizedBox(
+      width: 60.w,
+      child: Drawer(
+        child: SafeArea(
+          child: Column(
+            children: [
+              drawerListTile(
+                  title: 'Booking History',
+                  onTap: () {
+                    Get.toNamed('/bookingHistoryPage')!
+                        .whenComplete(() => Get.back());
+                  },
+                  icon: Icons.history),
+              drawerListTile(
+                  title: 'Logout',
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return logoutDialog();
+                      },
+                    );
+                  },
+                  icon: Icons.logout_rounded),
+              const Spacer(),
+              IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: const Icon(Icons.close_rounded),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget drawerListTile(
+      {required String title,
+      required void Function()? onTap,
+      required IconData? icon}) {
+    return ListTile(
+      title: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(icon),
+            ),
+            Text(title.tr),
+          ],
+        ),
+      ),
+      onTap: onTap,
+    );
+  }
+}
+
+Widget logoutDialog() {
+  return AlertDialog(
+    title: const Text('Logout'),
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Text('Are you sure want to logout?'),
+        SizedBox(height: Height.sizedbox_height_20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+              onPressed: () {
+                Preference.setBool(Preference.isLogin, false);
+                Preference.remove(Preference.userID);
+
+                Get.offAllNamed('/loginPage');
+              },
+              child: const Text('Yes'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: const Text('No'),
+            )
+          ],
+        ),
+      ],
+    ),
+  );
 }

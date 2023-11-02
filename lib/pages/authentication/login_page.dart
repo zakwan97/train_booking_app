@@ -154,8 +154,8 @@ class _LoginPageState extends State<LoginPage> {
                               finalPassword = passwordTextController.text;
                             });
                             await lc
-                                .checkSignIn(
-                                    'zakwan@gmail.com', 'password1234@')
+                                .checkSignIn(emailTextController.text,
+                                    passwordTextController.text)
                                 .then((value) {
                               Get.toNamed('/homePage');
                               Preference.setBool(Preference.isLogin, true);
