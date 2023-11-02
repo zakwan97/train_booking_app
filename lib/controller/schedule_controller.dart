@@ -50,8 +50,9 @@ class ScheduleController extends GetxController {
     update();
   }
 
-  Future createBooking(int? scheduleID) async {
-    var dataTemp = await BookingService().createBooking(scheduleID, userID);
+  Future createBooking(int? scheduleID, String totalPrice) async {
+    var dataTemp =
+        await BookingService().createBooking(scheduleID, userID, totalPrice);
     bookingID = dataTemp[0]['bookingID'];
 
     tempSeatID.toSet();

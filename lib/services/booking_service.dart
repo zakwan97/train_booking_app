@@ -10,7 +10,7 @@ class BookingService {
   Future getBookingDetails(int? scheduleID, int? bookingID) async {
     int? id = userID;
     final response = await supabase
-        .from('Booking')
+        .from('Booking_2')
         .select('Users(fullname),'
             'Schedule(departureStation, arrivalStation, departureTime, arrivalTime, departureDate, arrivalDate, price)')
         .eq('userID', id)
@@ -24,23 +24,24 @@ class BookingService {
   Future getBookingHistory() async {
     int? id = userID;
     final response = await supabase
-        .from('Booking')
-        .select('Users(fullname),'
+        .from('Booking_2')
+        .select('totalPrice,'
+            'Users(fullname),'
             'Schedule(departureStation, arrivalStation, departureTime, arrivalTime, departureDate, arrivalDate, price)')
         .eq('userID', id);
-    print('booking history $response');
+    print(response);
     return response;
   }
 
-  Future createBooking(int? scheduleID, int? userID) async {
+  Future createBooking(int? scheduleID, int? userID, String totalPrice) async {
     DateTime dateNow = DateTime.now();
     String dateTimeString = dateNow.toIso8601String();
     var response = await supabase
-        .from('Booking')
+        .from('Booking_2')
         .insert({
           'scheduleID': scheduleID,
           'userID': userID,
-          // 'paymentType': paymentType,
+          'totalPrice': totalPrice,
           'created_at': dateTimeString
         })
         .select('bookingID')

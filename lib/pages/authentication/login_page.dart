@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
-import 'package:get/route_manager.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:train_booking_app/controller/login_controller.dart';
-import 'package:train_booking_app/model/user/user_model.dart';
 import 'package:train_booking_app/util/preference.dart';
 import 'package:train_booking_app/util/supabase_client.dart' as s;
 import 'package:train_booking_app/shared/keyboard_unfocus.dart';

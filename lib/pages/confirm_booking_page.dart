@@ -64,6 +64,7 @@ class _ConfirmBookingPageState extends State<ConfirmBookingPage> {
                 Text(
                     'Departure Station: ${bk.bkSchedule![0].departureStation}'),
                 Text('Arrival Station: ${bk.bkSchedule![0].arrivalStation}'),
+                Text('Date Departure: ${bk.bkSchedule![0].departureDate}'),
                 Text('Departure Time: ${bk.bkSchedule![0].departureTime}'),
                 Text('Arrival Time: ${bk.bkSchedule![0].arrivalTime}'),
                 Text('Ticket Price: RM$totalPrice'),
@@ -87,12 +88,13 @@ class _ConfirmBookingPageState extends State<ConfirmBookingPage> {
                   onPressed: () async {
                     if (selectedPaymentMethod != 'Select Payment Method') {
                       await s
-                          .createBooking(s.scheduleList[0].scheduleID)
+                          .createBooking(s.scheduleList[0].scheduleID,
+                              totalPrice.toString())
                           .then((value) {
                         BookingService().getBookingDetails(
                             s.scheduleList[0].scheduleID, s.bookingID);
                       });
-                      Get.offNamed('/finalBookingPage');
+                      Get.offAllNamed('/finalBookingPage');
                     } else {
                       Get.snackbar('Payment', 'Please select your payment type',
                           backgroundColor: Colors.red,

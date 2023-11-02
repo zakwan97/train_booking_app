@@ -5,6 +5,7 @@ import 'package:train_booking_app/controller/login_controller.dart';
 import 'package:train_booking_app/routes/app_pages.dart';
 import 'package:train_booking_app/util/preference.dart';
 import 'package:train_booking_app/util/supabase_client.dart';
+import 'dart:io' show Platform;
 
 class InitialBinding implements Bindings {
   @override
@@ -20,6 +21,14 @@ void main() async {
       Preference.setBool(Preference.isLogin, false);
   supabaseclient;
   runApp(const MyApp());
+}
+
+checkOS() {
+  if (Platform.isIOS) {
+    print('ios');
+  } else if (Platform.isAndroid) {
+    print('android');
+  }
 }
 
 class MyApp extends StatelessWidget {

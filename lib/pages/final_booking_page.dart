@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
 import 'package:train_booking_app/controller/booking_controller.dart';
 
@@ -26,6 +27,12 @@ class _FinalBookingPageState extends State<FinalBookingPage> {
                 children: [
                   const Card(
                     child: Text('Success'),
+                  ),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  const Card(
+                    child: Text('Please go to booking history to print'),
                   ),
                   MaterialButton(
                     shape: RoundedRectangleBorder(

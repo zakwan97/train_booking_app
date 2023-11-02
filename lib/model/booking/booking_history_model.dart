@@ -1,14 +1,17 @@
 class BookingDetailsModel {
+  String totalPrice;
   UserModel users;
   ScheduleModel schedule;
 
   BookingDetailsModel({
+    required this.totalPrice,
     required this.users,
     required this.schedule,
   });
 
   factory BookingDetailsModel.fromJson(Map<String, dynamic> json) {
     return BookingDetailsModel(
+      totalPrice: json['totalPrice'],
       users: UserModel.fromJson(json['Users']),
       schedule: ScheduleModel.fromJson(json['Schedule']),
     );
