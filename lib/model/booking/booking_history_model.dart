@@ -1,3 +1,5 @@
+import 'package:train_booking_app/model/user/user_model.dart';
+
 class BookingDetailsModel {
   String totalPrice;
   UserModel users;
@@ -18,19 +20,19 @@ class BookingDetailsModel {
   }
 }
 
-class UserModel {
-  String fullname;
+// class UserModel {
+//   String fullname;
 
-  UserModel({
-    required this.fullname,
-  });
+//   UserModel({
+//     required this.fullname,
+//   });
 
-  factory UserModel.fromJson(Map<String, dynamic> json) {
-    return UserModel(
-      fullname: json['fullname'],
-    );
-  }
-}
+//   factory UserModel.fromJson(Map<String, dynamic> json) {
+//     return UserModel(
+//       fullname: json['fullname'],
+//     );
+//   }
+// }
 
 class ScheduleModel {
   String departureStation;

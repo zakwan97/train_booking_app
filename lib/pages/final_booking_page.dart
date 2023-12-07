@@ -43,7 +43,7 @@ class _FinalBookingPageState extends State<FinalBookingPage> {
                     minWidth: double.infinity,
                     child: const Text("FINISH"),
                     onPressed: () {
-                      Get.offAllNamed('/homePage');
+                      Get.offAllNamed('/homePage')!.then((value) {});
                     },
                   )
                 ],

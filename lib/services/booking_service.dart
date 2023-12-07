@@ -26,7 +26,7 @@ class BookingService {
     final response = await supabase
         .from('Booking_2')
         .select('totalPrice,'
-            'Users(fullname),'
+            'Users(userID, fullname, email),'
             'Schedule(departureStation, arrivalStation, departureTime, arrivalTime, departureDate, arrivalDate, price)')
         .eq('userID', id);
     print(response);

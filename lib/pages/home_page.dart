@@ -27,10 +27,20 @@ class _HomePageState extends State<HomePage> {
   UserController u = Get.put(UserController());
   ScheduleController s = Get.put(ScheduleController());
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     u.getData();
     super.initState();
+  }
+
+  toggleDrawer() async {
+    if (_scaffoldKey.currentState!.isDrawerOpen) {
+      _scaffoldKey.currentState?.openEndDrawer();
+    } else {
+      _scaffoldKey.currentState?.openDrawer();
+    }
   }
 
   @override
@@ -40,6 +50,7 @@ class _HomePageState extends State<HomePage> {
         top: false,
         child: KeyboardUnfocusFunction(
           child: Scaffold(
+            key: _scaffoldKey,
             drawer: drawer(),
             backgroundColor: Colors.red[50],
             appBar: AppBar(
@@ -252,9 +263,12 @@ class _HomePageState extends State<HomePage> {
             children: [
               drawerListTile(
                   title: 'Booking History',
-                  onTap: () {
-                    Get.toNamed('/bookingHistoryPage')!
-                        .whenComplete(() => Get.back());
+                  onTap: () async {
+                    // Get.toNamed('/bookingHistoryPage')!.then((value) {
+                    //   Get.offAndToNamed('/homePage');
+                    // });
+                    Get.back();
+                    Get.toNamed('/bookingHistoryPage');
                   },
                   icon: Icons.history),
               drawerListTile(
