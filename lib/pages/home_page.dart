@@ -3,8 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:train_booking_app/controller/home_controller.dart';
 import 'package:train_booking_app/controller/login_controller.dart';
 import 'package:train_booking_app/controller/schedule_controller.dart';
+import 'package:train_booking_app/pages/bottomnavbar/animated_bottom_bar.dart';
 import 'package:train_booking_app/shared/keyboard_unfocus.dart';
 import 'package:train_booking_app/shared/size_shared.dart';
 import 'package:train_booking_app/shared/textformfield_shared_2.dart';
@@ -19,13 +21,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // TextEditingController originController = TextEditingController();
-  // TextEditingController destinationController = TextEditingController();
-  // TextEditingController paxController = TextEditingController();
-  // TextEditingController dateController = TextEditingController();
   final _searchformKey = GlobalKey<FormState>();
   UserController u = Get.put(UserController());
   ScheduleController s = Get.put(ScheduleController());
+  HomeController hm = Get.put(HomeController());
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -53,6 +52,27 @@ class _HomePageState extends State<HomePage> {
             key: _scaffoldKey,
             drawer: drawer(),
             backgroundColor: Colors.red[50],
+            // floatingActionButtonLocation:
+            //     FloatingActionButtonLocation.centerFloat,
+            // floatingActionButton: AnimatedBottomBar(
+            //   currentIcon: hm.currentIndex,
+            //   onTap: (int index) {
+            //     setState(() {
+            //       hm.indexChange(index);
+            //     });
+            //   },
+            //   icons: hm.icon,
+            // ),
+            bottomNavigationBar: AnimatedBottomBar(
+              currentIndex: hm.currentIndex,
+              icons: hm.icon,
+              onTap: (int index) {
+                print(index);
+                setState(() {
+                  hm.indexChange(index);
+                });
+              },
+            ),
             appBar: AppBar(
               title: const Text(
                 "HOMEPAGE",
@@ -185,7 +205,7 @@ class _HomePageState extends State<HomePage> {
                                                             DateTime.now(),
                                                         lastDate:
                                                             DateTime.parse(
-                                                                '2023-11-08'))
+                                                                '2024-12-31'))
                                                     .then(
                                                   (value) {
                                                     if (value != null) {
