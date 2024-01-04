@@ -42,66 +42,71 @@ class _BookingHistoryPageState extends State<BookingHistoryPage> {
             ),
           ),
           body: Center(
-            child: (bk.bkHistoryList.isEmpty)
-                ? const Center(
-                    child: CircularProgressIndicator(color: Colors.red),
-                  )
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: bk.bkHistoryList.length,
-                          itemBuilder: (context, index) {
-                            return Card(
-                              color: Colors.red[50],
-                              child: Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: ListTile(
-                                  trailing: InkWell(
-                                    onTap: () async {
-                                      // await extractToPDF(index);
-                                      // generate pdf file
-                                      final pdfFile =
-                                          await PDFBookingTicket.generate(
-                                              bk.bkHistoryList[index].users,
-                                              bk.bkHistoryList[index].schedule);
-                                      // opening the pdf file
-                                      PdfHelper.openFile(pdfFile);
-                                    },
-                                    child: const Icon(Icons.print),
-                                  ),
-                                  title: Text(
-                                      'Full Name: ${bk.bkHistoryList[index].users.fullname}'),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                          'Departure Station: ${bk.bkHistoryList[index].schedule.departureStation}'),
-                                      Text(
-                                          'Arrival Station: ${bk.bkHistoryList[index].schedule.arrivalStation}'),
-                                      Text(
-                                          'Departure Time: ${bk.bkHistoryList[index].schedule.departureTime}'),
-                                      Text(
-                                          'Arrival Time: ${bk.bkHistoryList[index].schedule.arrivalTime}'),
-                                      Text(
-                                          'Departure Date: ${bk.bkHistoryList[index].schedule.departureDate}'),
-                                      Text(
-                                          'Arrival Date: ${bk.bkHistoryList[index].schedule.arrivalDate}'),
-                                      Text(
-                                          'Price: RM${bk.bkHistoryList[index].totalPrice}'),
-                                    ],
-                                  ),
-                                ),
+              child: (bk.isLoading)
+                  ? const Center(
+                      child: CircularProgressIndicator(color: Colors.red),
+                    )
+                  : (bk.bkHistoryList.isNotEmpty)
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: ListView.builder(
+                                itemCount: bk.bkHistoryList.length,
+                                itemBuilder: (context, index) {
+                                  return Card(
+                                    color: Colors.red[50],
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(2.0),
+                                      child: ListTile(
+                                        trailing: InkWell(
+                                          onTap: () async {
+                                            // await extractToPDF(index);
+                                            // generate pdf file
+                                            final pdfFile =
+                                                await PDFBookingTicket.generate(
+                                                    bk.bkHistoryList[index]
+                                                        .users,
+                                                    bk.bkHistoryList[index]
+                                                        .schedule);
+                                            // opening the pdf file
+                                            PdfHelper.openFile(pdfFile);
+                                          },
+                                          child: const Icon(Icons.print),
+                                        ),
+                                        title: Text(
+                                            'Full Name: ${bk.bkHistoryList[index].users.fullname}'),
+                                        subtitle: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                                'Departure Station: ${bk.bkHistoryList[index].schedule.departureStation}'),
+                                            Text(
+                                                'Arrival Station: ${bk.bkHistoryList[index].schedule.arrivalStation}'),
+                                            Text(
+                                                'Departure Time: ${bk.bkHistoryList[index].schedule.departureTime}'),
+                                            Text(
+                                                'Arrival Time: ${bk.bkHistoryList[index].schedule.arrivalTime}'),
+                                            Text(
+                                                'Departure Date: ${bk.bkHistoryList[index].schedule.departureDate}'),
+                                            Text(
+                                                'Arrival Date: ${bk.bkHistoryList[index].schedule.arrivalDate}'),
+                                            Text(
+                                                'Price: RM${bk.bkHistoryList[index].totalPrice}'),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-          ),
+                            ),
+                          ],
+                        )
+                      : const Center(
+                          child: Text('Empty'),
+                        )),
         ),
       );
     });

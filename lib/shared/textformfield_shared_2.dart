@@ -40,6 +40,8 @@ class TextFormFieldShared extends StatelessWidget {
     return TextFormField(
       inputFormatters: inputFormatters,
       decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.white,
         labelText: label,
         prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
         hintText: hintText,

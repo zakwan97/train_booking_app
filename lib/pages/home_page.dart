@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:train_booking_app/controller/home_controller.dart';
+import 'package:train_booking_app/controller/navigation_controller.dart';
 import 'package:train_booking_app/controller/login_controller.dart';
 import 'package:train_booking_app/controller/schedule_controller.dart';
 import 'package:train_booking_app/pages/bottomnavbar/animated_bottom_bar.dart';
@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
   final _searchformKey = GlobalKey<FormState>();
   UserController u = Get.put(UserController());
   ScheduleController s = Get.put(ScheduleController());
-  HomeController hm = Get.put(HomeController());
+  NavigationController nav = Get.put(NavigationController());
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -50,8 +50,8 @@ class _HomePageState extends State<HomePage> {
         child: KeyboardUnfocusFunction(
           child: Scaffold(
             key: _scaffoldKey,
-            drawer: drawer(),
-            backgroundColor: Colors.red[50],
+            // drawer: drawer(),
+            backgroundColor: Colors.white,
             // floatingActionButtonLocation:
             //     FloatingActionButtonLocation.centerFloat,
             // floatingActionButton: AnimatedBottomBar(
@@ -63,16 +63,16 @@ class _HomePageState extends State<HomePage> {
             //   },
             //   icons: hm.icon,
             // ),
-            bottomNavigationBar: AnimatedBottomBar(
-              currentIndex: hm.currentIndex,
-              icons: hm.icon,
-              onTap: (int index) {
-                print(index);
-                setState(() {
-                  hm.indexChange(index);
-                });
-              },
-            ),
+            // bottomNavigationBar: AnimatedBottomBar(
+            //   currentIndex: nav.currentIndex,
+            //   icons: hm.icon,
+            //   onTap: (int index) {
+            //     print(index);
+            //     setState(() {
+            //       hm.indexChange(index);
+            //     });
+            //   },
+            // ),
             appBar: AppBar(
               title: const Text(
                 "HOMEPAGE",
@@ -102,6 +102,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             Card(
                               color: Colors.white,
+                              elevation: 2.0,
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Column(

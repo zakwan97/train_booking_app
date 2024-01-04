@@ -24,6 +24,7 @@ class BookingController extends GetxController {
         await BookingService().getBookingDetails(scheduleID, bookingID);
     bkHistoryList =
         response.map((item) => BookingDetailsModel.fromJson(item)).toList();
+    isLoading = false;
     update();
   }
 
@@ -31,6 +32,7 @@ class BookingController extends GetxController {
     List response = await BookingService().getBookingHistory();
     bkHistoryList =
         response.map((item) => BookingDetailsModel.fromJson(item)).toList();
+    isLoading = false;
     update();
   }
 }

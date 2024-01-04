@@ -17,6 +17,7 @@ Widget customTextFormField(
   return Expanded(
     child: TextFormField(
       decoration: InputDecoration(
+        fillColor: Colors.white,
         labelText: label,
         prefixIcon: Icon(prefixIcon),
         hintText: hintText,

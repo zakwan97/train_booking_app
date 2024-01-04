@@ -15,43 +15,53 @@ class AnimatedBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.transparent,
-      child: Container(
-        margin: const EdgeInsets.all(40),
-        padding: const EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 2,
-              blurRadius: 5,
-              offset: const Offset(0, 2), // changes position of shadow
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: icons
-              .map(
-                (icon) => GestureDetector(
-                  onTap: () => onTap?.call(icon.index),
-                  child: AnimatedSize(
+      // margin: const EdgeInsets.all(5),
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        // borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: const Offset(0, 2), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: icons
+            .map(
+              (icon) => GestureDetector(
+                onTap: () => onTap?.call(icon.index),
+                child: AnimatedSize(
                     curve: Curves.decelerate,
                     duration: const Duration(milliseconds: 600),
-                    child: Icon(
-                      icon.icon,
-                      size: currentIndex == icon.index ? 30 : 23,
-                      color: currentIndex == icon.index
-                          ? Colors.red
-                          : Colors.blueGrey,
-                    ),
-                  ),
-                ),
-              )
-              .toList(),
-        ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          icon.icon,
+                          size: currentIndex == icon.index ? 30 : 23,
+                          color: currentIndex == icon.index
+                              ? Colors.red
+                              : Colors.blueGrey,
+                        ),
+                        Text(
+                          icon.title,
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: currentIndex == icon.index
+                                ? Colors.red
+                                : Colors.blueGrey,
+                          ),
+                        )
+                      ],
+                    )),
+              ),
+            )
+            .toList(),
       ),
     );
   }

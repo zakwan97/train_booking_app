@@ -1,8 +1,13 @@
 class AppRoutes {
-  static const String splashPage = '/splashPage';
+  //authentication
   static const String loginPage = '/loginPage';
+  static const String signupPage = '/signupPage';
+
+  static const String splashPage = '/splashPage';
+
   static const String bookingPage = '/bookingPage';
   static const String homePage = '/homePage';
+  static const String mainPage = '/mainPage';
   //ticket page
   static const String ticketPage = '/ticketPage';
   static const String trainSeatSelectionPage = '/trainSeatSelectionPage';

@@ -7,7 +7,6 @@ import 'package:train_booking_app/controller/login_controller.dart';
 import 'package:train_booking_app/util/preference.dart';
 import 'package:train_booking_app/util/supabase_client.dart' as s;
 import 'package:train_booking_app/shared/keyboard_unfocus.dart';
-import 'package:train_booking_app/shared/size_shared.dart';
 import 'package:train_booking_app/shared/textformfield_shared_2.dart';
 
 class LoginPage extends StatefulWidget {
@@ -34,10 +33,10 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    supabase = SupabaseClient(
-      s.supabaseUrl,
-      s.supabaseApiKey,
-    );
+    // supabase = SupabaseClient(
+    //   s.supabaseUrl,
+    //   s.supabaseApiKey,
+    // );
     super.initState();
   }
 
@@ -75,12 +74,24 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Container(
-                    margin: EdgeInsets.symmetric(
-                        vertical: Height.sizedbox_height_10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFF000000).withAlpha(60),
+                          blurRadius: 10.0,
+                          spreadRadius: 0.0,
+                          offset: const Offset(
+                            0.0,
+                            3.0,
+                          ),
+                        ),
+                      ],
+                    ),
                     child: Image.asset(
-                      'assets/images/train_image.png',
-                      width: 26.6.w,
-                      height: 12.3.h,
+                      'assets/images/train_logo.png',
+                      width: 40.w,
+                      height: 20.h,
                     ),
                   ),
                   Padding(
@@ -137,6 +148,18 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(
                           height: 1.0.h,
                         ),
+                        const Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            'Forgot Password?',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 1.0.h,
+                        ),
                         MaterialButton(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
@@ -144,7 +167,7 @@ class _LoginPageState extends State<LoginPage> {
                           height: 40.0,
                           color: Colors.red,
                           minWidth: double.infinity,
-                          child: const Text("LOGIN"),
+                          child: const Text("Login"),
                           onPressed: () async {
                             // if (_formKey.currentState!.validate()) {
                             setState(() {
@@ -155,11 +178,28 @@ class _LoginPageState extends State<LoginPage> {
                                 .checkSignIn(emailTextController.text,
                                     passwordTextController.text)
                                 .then((value) {
-                              Get.toNamed('/homePage');
+                              Get.offAndToNamed('/mainPage');
                               Preference.setBool(Preference.isLogin, true);
                             });
                             // }
                           },
+                        ),
+                        SizedBox(
+                          height: 3.0.h,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Get.toNamed('/signupPage');
+                          },
+                          child: const Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Sign Up',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87),
+                            ),
+                          ),
                         )
                       ],
                     ),

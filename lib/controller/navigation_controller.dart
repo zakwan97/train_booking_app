@@ -3,15 +3,15 @@ import 'package:get/get.dart';
 import 'package:train_booking_app/model/icon_model.dart';
 import 'package:train_booking_app/pages/booking_history_page.dart';
 import 'package:train_booking_app/pages/home_page.dart';
-import 'package:train_booking_app/pages/profile_page.dart';
+import 'package:train_booking_app/pages/profile/profile_page.dart';
 
-class HomeController extends GetxController {
+class NavigationController extends GetxController {
   // int currentIndex = const Icon(Icons.person).hashCode;
   int currentIndex = 0;
   List<IconModel> icon = [
-    IconModel(index: 1, icon: Icons.home_outlined),
-    IconModel(index: 2, icon: Icons.history_outlined),
-    IconModel(index: 3, icon: Icons.person_2_outlined),
+    IconModel(index: 0, icon: Icons.home_outlined, title: "Home"),
+    IconModel(index: 1, icon: Icons.list_rounded, title: "Booking"),
+    IconModel(index: 2, icon: Icons.person_2_outlined, title: "Profile"),
   ];
 
   // List<IconModel> icon = [

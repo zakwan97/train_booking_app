@@ -31,7 +31,7 @@ class _SplashPageState extends State<SplashPage> {
   redirectPage(int duration) {
     Timer(Duration(seconds: duration), () {
       isLogin
-          ? Get.offNamed(AppPages.homePage)
+          ? Get.offNamed(AppPages.mainPage)
           : Get.offNamed(AppPages.loginIn);
     });
   }
@@ -50,9 +50,9 @@ class _SplashPageState extends State<SplashPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/images/train_image.png',
-              height: 200,
-              width: 200,
+              'assets/images/speedy.png',
+              height: 300,
+              width: 300,
             ),
             const Padding(
               padding: EdgeInsets.all(30.0),

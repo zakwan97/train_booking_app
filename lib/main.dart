@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
-import 'package:train_booking_app/controller/login_controller.dart';
 import 'package:train_booking_app/routes/app_pages.dart';
+import 'package:train_booking_app/routes/bindings/initial_bindings.dart';
 import 'package:train_booking_app/util/preference.dart';
 import 'package:train_booking_app/util/supabase_client.dart';
 import 'dart:io' show Platform;
-
-class InitialBinding implements Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut(() => UserController(), fenix: true);
-  }
-}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,7 +40,7 @@ class MyApp extends StatelessWidget {
             bottomNavigationBarTheme: const BottomNavigationBarThemeData(
               backgroundColor: Colors.transparent,
             ),
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
             useMaterial3: true,
           ),
           initialRoute: '/splashPage',
