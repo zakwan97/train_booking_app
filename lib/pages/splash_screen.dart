@@ -19,7 +19,7 @@ class _SplashPageState extends State<SplashPage> {
   Future<void> _checkInternetConnection() async {
     try {
       final response = await InternetAddress.lookup('www.apple.com')
-          .timeout(const Duration(seconds: 10));
+          .timeout(const Duration(seconds: 50));
       if (response.isNotEmpty) {
         redirectPage(2);
       }

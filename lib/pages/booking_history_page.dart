@@ -34,6 +34,7 @@ class _BookingHistoryPageState extends State<BookingHistoryPage> {
         top: false,
         child: Scaffold(
           appBar: AppBar(
+            centerTitle: true,
             backgroundColor: Colors.red,
             title: const Text(
               'BOOKING HISTORY',

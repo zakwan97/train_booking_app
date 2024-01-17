@@ -138,9 +138,8 @@ class _LoginPageState extends State<LoginPage> {
                                   print(_passwordVisible);
                                 },
                                 icon: _passwordVisible
-                                    ? PhosphorIcon(PhosphorIcons.regular.eye)
-                                    : PhosphorIcon(
-                                        PhosphorIcons.regular.eyeClosed)),
+                                    ? PhosphorIcon(PhosphorIcons.eye())
+                                    : PhosphorIcon(PhosphorIcons.eyeClosed())),
                             readOnly: false,
                             obscureText: _passwordVisible ? false : true,
                             onChanged: (value) {},

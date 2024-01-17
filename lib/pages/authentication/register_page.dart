@@ -153,9 +153,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                   print(_passwordVisible);
                                 },
                                 icon: _passwordVisible
-                                    ? PhosphorIcon(PhosphorIcons.regular.eye)
-                                    : PhosphorIcon(
-                                        PhosphorIcons.regular.eyeClosed)),
+                                    ? PhosphorIcon(PhosphorIcons.eye())
+                                    : PhosphorIcon(PhosphorIcons.eyeClosed())),
                             readOnly: false,
                             obscureText: _passwordVisible ? false : true,
                             onChanged: (value) {},
@@ -185,9 +184,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                   print(_cpasswordVisible);
                                 },
                                 icon: _cpasswordVisible
-                                    ? PhosphorIcon(PhosphorIcons.regular.eye)
-                                    : PhosphorIcon(
-                                        PhosphorIcons.regular.eyeClosed)),
+                                    ? PhosphorIcon(PhosphorIcons.eye())
+                                    : PhosphorIcon(PhosphorIcons.eyeClosed())),
                             readOnly: false,
                             obscureText: _cpasswordVisible ? false : true,
                             onChanged: (value) {},

@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:train_booking_app/controller/navigation_controller.dart';
 import 'package:train_booking_app/controller/login_controller.dart';
 import 'package:train_booking_app/controller/schedule_controller.dart';
-import 'package:train_booking_app/pages/bottomnavbar/animated_bottom_bar.dart';
 import 'package:train_booking_app/shared/keyboard_unfocus.dart';
 import 'package:train_booking_app/shared/size_shared.dart';
 import 'package:train_booking_app/shared/textformfield_shared_2.dart';
@@ -74,6 +73,7 @@ class _HomePageState extends State<HomePage> {
             //   },
             // ),
             appBar: AppBar(
+              centerTitle: true,
               title: const Text(
                 "HOMEPAGE",
                 style: TextStyle(color: Colors.white, letterSpacing: 2.0),
