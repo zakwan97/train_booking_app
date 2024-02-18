@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:train_booking_app/routes/app_pages.dart';
 import 'package:train_booking_app/routes/bindings/initial_bindings.dart';
 import 'package:train_booking_app/util/preference.dart';
@@ -40,6 +41,10 @@ class MyApp extends StatelessWidget {
             bottomNavigationBarTheme: const BottomNavigationBarThemeData(
               backgroundColor: Colors.transparent,
             ),
+            fontFamily: GoogleFonts.poppins.toString(),    
+            textTheme: GoogleFonts.poppinsTextTheme(
+            Theme.of(context).textTheme,
+          ),  
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
             useMaterial3: true,
           ),
